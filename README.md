@@ -200,7 +200,8 @@ Example: flood control: to quiet for 1 minute anyone who sends more than 4 messa
     !config channel #channel supybot.plugins.ChanTracker.floodDuration 60 <-- for 60 seconds
     !config channel #channel supybot.plugins.ChanTracker.badPermit 2 <-- if user does that 3 times, 
     !config channel #channel supybot.plugins.ChanTracker.badLife 300 <-- during 5 minutes
-    !config channel #channel supybot.plugins.ChanTracker.badMode b <-- ban them 
+    !config channel #channel supybot.plugins.ChanTracker.badMode b <-- ban them
+    !confit channel #channel supybot.plugins.ChanTracker.badDuration 600 <-- for 10 minutes
 
 Additionally, the can track how many bad actions occur over a period of time and if a threshold is passed, this constitutes an attack on the channel. The attack* settings, when enabled keeps track of bad actions, and if the number exceeds attackPermit within attackLife, some specific channel modes are set for an attackDuration.
 
