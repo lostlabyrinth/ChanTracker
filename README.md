@@ -7,6 +7,7 @@ The plugin is used in various and large channels on freenode and others networks
 For cidr supports, you must install ipaddress ( pip for python 2.7 https://pypi.python.org/pypi/py2-ipaddress ) or netaddr ( python 2.7 https://pypi.python.org/pypi/netaddr )
 
 Alternatively one may install both by running:
+
     pip install -r requirements.txt
 
 ## Commands ##
