@@ -109,13 +109,13 @@ The command used by the bot to op itself is editable here:
 
 Where $channel and $nick will be replaced by targeted channel and bot's nick at runtime, so you could replace it with :
 
-        !config supybot.plugins.ChanTracker.opCommand "PRIVMSG ChanServ :OP $channel $nick"
+    !config supybot.plugins.ChanTracker.opCommand "PRIVMSG ChanServ :OP $channel $nick"
 
 You can also tell the bot to use ChanServ for quiet and unquiet, if it has +r flag, on freenode:
 
     !config supybot.plugins.ChanTracker.useChanServForQuiets True
     !config supybot.plugins.ChanTracker.quietCommand "PRIVMSG ChanServ :QUIET $channel $hostmask"
-    !config supybot.plugins.ChanTracker.quietCommand "PRIVMSG ChanServ :UNQUIET $channel $hostmask"
+    !config supybot.plugins.ChanTracker.unquietCommand "PRIVMSG ChanServ :UNQUIET $channel $hostmask"
 
 For more readable date information in output, you should change this:
 
@@ -165,8 +165,17 @@ By default, if the bot is asked to set a ban (+b), it will also kick affected us
 
     !config supybot.plugins.ChanTracker.kickMode
     !config supybot.plugins.ChanTracker.kickMessage
-
+    !config help supybot.plugins.ChanTracker.kickOnMode
+    
 The bot will remove exception modes (that is exempt e, or invite exempt I) for people banned if 'doActionAgainstAffected' for given channel is True.
+
+ChanTracker is trying to resolve ip behind host, but that can affect performance or freeze the bot due to socket's calls, if you use 'supybot.plugins.ChanTracker.resolveIp' to True, you should set 'supybot.debug.threadAllCommands' to True to avoid that. 
+
+**Due to changes on January 5 2016**, if your bot has 'supybot.capabilities.default' to False, Bot must have an account on itself with his cloak/host inside and ChanTracker capability ( because it calls ChanTracker.resolve ).
+
+    !user register botaccount randompassword
+    !hostmask add botaccount *!ident@bot.host
+    !admin capability add botaccount ChanTracker
 
 ## Channel Protection ##
 
@@ -183,6 +192,8 @@ The plugin has a lot of built-in channel protection features that can be enabled
 - nick: nick change spam
 - cycle: join/part flood
 - massJoin
+- evades of quiet/bans via gateway/ ( if resolveIp is True )
+- clones detection
 
 You should tweak settings to fits your needs, do not use default values. It really depends channel's population and usage ...
 
@@ -207,7 +218,7 @@ Example: flood control: to quiet for 1 minute anyone who sends more than 4 messa
     !config channel #channel supybot.plugins.ChanTracker.badMode b <-- ban them
     !confit channel #channel supybot.plugins.ChanTracker.badDuration 600 <-- for 10 minutes
 
-Additionally, the can track how many bad actions occur over a period of time and if a threshold is passed, this constitutes an attack on the channel. The attack* settings, when enabled keeps track of bad actions, and if the number exceeds attackPermit within attackLife, some specific channel modes are set for an attackDuration.
+Additionally, the bot can track how many bad actions occur over a period of time and if a threshold is passed, this constitutes an attack on the channel. The attack* settings, when enabled keeps track of bad actions, and if the number exceeds attackPermit within attackLife, some specific channel modes are set for an attackDuration.
 
 Example: not flooding: catch a wave of bots which sends the same message from different hosts:
 
